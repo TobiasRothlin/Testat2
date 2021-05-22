@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from dateien.devices import open_device
-from testat2 import vi_chracteristic
+from testat2 import vi_characteristic, is_strictly_monotonic
 
 """Init all devices
 v_source    -> voltage source
@@ -16,7 +16,7 @@ a_meter = open_device(addr=0x4D1E)
 source_voltage = np.linspace(0, 5, 26)
 
 """Calling the vi_characteristic function with the parameters"""
-res = vi_chracteristic(v_source=v_source, v_meter=v_meter, a_meter=a_meter,
+res = vi_characteristic(v_source=v_source, v_meter=v_meter, a_meter=a_meter,
                        source_voltage=source_voltage)
 
 """Showing the result"""
@@ -24,5 +24,4 @@ print(res)
 """Plotting the result"""
 plt.plot(res[:, 0], res[:, 1])
 plt.show()
-
 
