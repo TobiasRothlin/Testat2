@@ -31,6 +31,11 @@ class TestDatenAuswetrung(unittest.TestCase):
         for i in range(len(res["I"])):
             self.assertAlmostEqual(res["I"][i], test[i])
 
+    def test_interpolation3(self):
+        vi = np.c_[[1, 2.5, 8], [10, 12, 20]]
+        res = interpolation(vi, {})
+        self.assertEqual(res,{})
+
     def test_interpolation2(self):
         vi = np.c_[[1, 2.5, 8], [10, 12, 20]]
         res = interpolation(vi, {"V": [1.4, 1.8, 4], "I": [11.1, 18]})
