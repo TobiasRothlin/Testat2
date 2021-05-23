@@ -26,26 +26,27 @@ class TestDatenAuswetrung(unittest.TestCase):
 
     def test_interpolation1(self):
         vi = np.c_[[1, 2.5, 8], [10, 12, 20]]
-        self.assertEqual(interpolation(vi, {"V": [1.4, 1.8, 4]}),
-                         {"I": [10.53333333, 11.06666667, 14.18181818]})
+        res = interpolation(vi, {"V": [1.4, 1.8, 4]})
+        test = [10.53333333, 11.06666667, 14.18181818]
+        for i in range(len(res["I"])):
+            self.assertAlmostEqual(res["I"][i], test[i])
 
-    def test_interpolation1(self):
+    def test_interpolation2(self):
         vi = np.c_[[1, 2.5, 8], [10, 12, 20]]
-        self.assertEqual(
-            interpolation(vi, {"V": [1.4, 1.8, 4], "I": [11.1, 18]}),
-            {"I": [10.53333333, 11.06666667, 14.18181818],
-             "V": [1.825, 6.625]})
+        res = interpolation(vi, {"V": [1.4, 1.8, 4], "I": [11.1, 18]})
+        test = {"I": [10.53333333, 11.06666667, 14.18181818],
+                "V": [1.825, 6.625]}
+        for i in range(len(res["I"])):
+            self.assertAlmostEqual(res["I"][i], test["I"][i])
+        for i in range(len(res["V"])):
+            self.assertAlmostEqual(res["V"][i], test["V"][i])
 
     def test_LinInterpolationXAxis(self):
         vi = np.c_[[-0.6, 0], [0, 3]]
-        print(vi)
         res = linear_interpolation_x_axis(vi[0], vi[1], 1)
-        print(res)
         self.assertEqual(res, 8)
 
     def test_LinInterpolationYAxis(self):
         vi = np.c_[[-0.6, 0], [0, 3]]
-        print(vi)
         res = linear_interpolation_y_axis(vi[0], vi[1], 8)
-        print(res)
         self.assertEqual(res, 1)
