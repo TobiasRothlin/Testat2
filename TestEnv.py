@@ -64,5 +64,5 @@ a_meter     -> current meter"""
 # save_data("frequency_response_with_labels.txt", f, I1, Q1,
 # labels=["Frequency (Hz)", "Amplitude", "Phase"])
 
-res = load_data("frequency_response_with_labels.txt", True)
+res = load_data("frequency_response.txt", True)
 print(res)

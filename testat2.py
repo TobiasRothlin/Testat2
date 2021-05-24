@@ -1,5 +1,4 @@
 import math
-
 import numpy as np
 from scipy import interpolate
 from scipy.misc import derivative
@@ -406,6 +405,7 @@ def save_data(fname, *args, labels=[]):
             array = ""
             try:
                 for element in line[i]:
+                    # Formatting the number to 6 digits after the comma
                     array += str('{0:.6f}'.format(element)) + ","
             except TypeError:
                 array = str('{0:.6f}'.format(line[i])) + ","
@@ -452,30 +452,35 @@ def load_data(fname, col_labels=False):
     header_string = ""
     if col_labels:
         header_string = lines_in_file[0]
-        if not "#" in header_string:
+        if header_string[-1] == ",":
+            header_string = header_string[:-1]
+        if "#" not in header_string:
             raise ValueError("no labels present in the file")
-        if not len(lines_in_file[1].split(",")) == len(header_string.split(",")):
-            raise ValueError("invalid number of labelse")
-
+        if not len(lines_in_file[1].split(",")) == len(
+                header_string.split(",")):
+            raise ValueError("invalid number of labels")
+        header_string = header_string.replace("#", "")
+        header_string = header_string[1:]
+        header_string = header_string.split(",")
         lines_in_file = lines_in_file[1:]
-
-        print("header_string: ",header_string)
-    print("lines_in_file: ", lines_in_file)
-
-    if "#" in lines_in_file[0]:
-        raise ValueError("labels found in the file")
 
     for line in lines_in_file:
         elements = line.split(",")
-        for i in range(len(elements)):
-            try:
-                parsed_file[i].append(float(elements[i]))
-            except ValueError:
-                print("Could not parse : ", element)
+        if len(line) > 0 and not line[0] == "#":
+            for i in range(len(elements)):
+                try:
+                    parsed_file[i].append(float(elements[i]))
+                except ValueError:
+                    print("Parsing Error--------")
+                    print("Could not parse : ", elements[i])
+                    print("--------")
 
     measurement_array = []
 
     for measurement in parsed_file:
         measurement_array.append(np.array(measurement))
 
-    return np.array(measurement_array, dtype=object)
+    if col_labels:
+        return [np.array(measurement_array, dtype=object), header_string]
+    else:
+        return np.array(measurement_array, dtype=object)
